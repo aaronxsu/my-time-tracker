@@ -55,7 +55,11 @@ class DayCard extends React.Component {
                 </Button>
               </Grid>
             </Grid>
-            {this.props.entries.entries.map(entry => <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />)}
+              {
+                this.props.entries.entries.map((entry) => {
+                  return <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />
+                })
+              }
             <NewEntry />
           </Grid>
           <Grid item xs={10}>
