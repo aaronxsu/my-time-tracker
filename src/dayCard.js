@@ -1,27 +1,43 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
 import Grid from 'material-ui/Grid';
-import List, { ListItem, ListItemText } from 'material-ui/List';
-import Divider from 'material-ui/Divider';
 import AddIcon from '@material-ui/icons/Add';
 
-import moment from 'moment'
+import moment from 'moment';
 
-import NewEntry from './newEntry.js'
-import OldEntry from './oldEntry.js'
+import NewEntry from './newEntry.js';
+import OldEntry from './oldEntry.js';
 
 const styles = {
   marginTop: '1em',
   marginRight: '2em',
 };
 
-let currentDate = moment().format('MM/DD/YYYY');
-let currentDay = moment().format('dddd')
-let today = ['Today', currentDate, currentDay].join(', ');
+class DayCard extends React.Component {
+  constructor(props) {
+    super(props);
+    this.today = [
+      'Today',
+      moment().format('MM/DD/YYYY'),
+      moment().format('dddd')
+    ].join(', ');
 
-class DayCard extends Component {
+    this.totalTime = this.getWorkTime(this.props.entries.entries.reduce((acc, e) => {
+      return acc + moment(e.end, "HH:mm:ss").diff(moment(e.start, "HH:mm:ss"));
+    }, 0) / 1000 / 60);
+  }
+
+  getWorkTime(mins) {
+    if(mins > 60 ) {
+      let hours = Math.floor(mins/60) ;
+      let minutes = Math.round(mins - hours * 60);
+      return `${hours} hr ${minutes} min`
+    }
+    return `${Math.round(mins)} min`;
+  }
+
   render() {
     return(
       <div>
@@ -30,7 +46,7 @@ class DayCard extends Component {
             <Grid container spacing={8}>
               <Grid item xs={11}>
                 <Typography gutterBottom variant="title">
-                  {today}
+                  {this.props.entries.date}
                 </Typography>
               </Grid>
               <Grid item xs={1}>
@@ -39,13 +55,13 @@ class DayCard extends Component {
                 </Button>
               </Grid>
             </Grid>
+            {this.props.entries.entries.map(entry => <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />)}
             <NewEntry />
-            <OldEntry />
           </Grid>
           <Grid item xs={10}>
           </Grid>
           <Grid item xs={2}>
-            Total:
+            Total: {this.totalTime}
           </Grid>
         </Grid>
       </div>

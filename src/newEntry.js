@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
-import Card, { CardActions, CardContent } from 'material-ui/Card';
+import React from 'react';
 
-class NewEntry extends Component {
+class NewEntry extends React.Component {
   render() {
     return('')
   }
