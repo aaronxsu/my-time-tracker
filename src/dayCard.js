@@ -60,7 +60,7 @@ class DayCard extends React.Component {
                   return <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />
                 })
               }
-            <NewEntry />
+            <NewEntry dateId={this.props.dateId} onAddEntry={this.props.onAddEntry} />
           </Grid>
           <Grid item xs={10}>
           </Grid>

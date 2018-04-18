@@ -3,59 +3,11 @@ import Grid from 'material-ui/Grid';
 
 import moment from 'moment';
 
-import {chain, map} from 'lodash';
+import {chain, map, cloneDeep} from 'lodash';
 
 import DayCard from './dayCard.js';
 
-const records = [
-  {
-    id: '7be1cd0a-39b3-4be9-90ea-88601aaa2f80',
-    date: '04/13/2018',
-    entries: [
-      {
-        id: 'de72abe4-0e91-47fc-a61e-bdac60d53a52',
-        task: 'PR review',
-        tag: 'Raster Foundry Core',
-        start: '12:48:36',
-        end: '13:30:27'
-      },
-      {
-        id: 'b96dd0d3-bd81-479e-a20d-94c196e441df',
-        task: 'PR Update',
-        tag: 'Raster Foundry Core',
-        start: '10:45:00',
-        end: '11:25:59'
-      }
-    ]
-  },
-  {
-    id: 'bbe9681f-ecea-4601-8aad-8f280c9eb42a',
-    date: '04/16/2018',
-    entries: [
-      {
-        id: 'ef636609-5623-4c32-b292-dab9cd1c994b',
-        task: 'Update spec',
-        tag: 'Raster Foundry Core',
-        start: '16:48:46',
-        end: '17:10:20'
-      },
-      {
-        id: '7cd904b2-4f69-4a0b-be20-1191d8dece40',
-        task: 'Scrum',
-        tag: 'Meeting',
-        start: '10:30:27',
-        end: '10:38:50'
-      },
-      {
-        id: '6cecae57-f51a-450f-9459-e3e64c4ed1b3',
-        task: 'Name filter endpoint card',
-        tag: 'Raster Foundry Core',
-        start: '10:48:46',
-        end: '15:10:20'
-      }
-    ]
-  }
-]
+import records from './records.json'
 
 class Content extends React.Component {
   constructor(props) {
@@ -66,6 +18,9 @@ class Content extends React.Component {
       moment().format('dddd')
     ].join(', ');
     this.records = this.sortRecords(records);
+    this.state = {
+      records: this.records
+    }
   }
 
   sortRecords(records) {
@@ -88,10 +43,35 @@ class Content extends React.Component {
     return recordsCopy;
   }
 
+  getCurrentState() {
+    return this.state;
+  }
+
+  addEntry(dateId, entry) {
+    let state = cloneDeep(this.getCurrentState());
+    console.log(state);
+    // this.setState({
+    //   records: this.sortRecords(state.records.map((date) => {
+    //     if(date.id === dateId) {
+    //       date.entries.push(entry);
+    //     }
+    //     return date;
+    //   }))
+    // });
+    console.log(dateId, entry);
+    console.log(this.state);
+  }
+
   render() {
     return(
       <Grid item xs={10}>
-        {map(this.records, entries => <DayCard key={entries.id} entries={entries}/>)}
+        {map(this.state.records, entries => {
+          return <DayCard
+            key={entries.id}
+            entries={entries}
+            dateId={entries.id}
+            onAddEntry={this.addEntry}/>
+        })}
       </Grid>
     )
   }

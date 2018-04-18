@@ -37,8 +37,8 @@ class OldEntry extends React.Component {
               <Grid item xs={3}>
                 {
                   [
-                    this.start.format("HH:mm"),
-                    this.end.format("HH:mm")
+                    this.start.format("HH:mm A"),
+                    this.end.format("HH:mm A")
                   ].join(' - ')
                 }
               </Grid>
