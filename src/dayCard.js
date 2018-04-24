@@ -27,6 +27,9 @@ class DayCard extends React.Component {
     this.totalTime = this.getWorkTime(this.props.entries.entries.reduce((acc, e) => {
       return acc + moment(e.end, "HH:mm:ss").diff(moment(e.start, "HH:mm:ss"));
     }, 0) / 1000 / 60);
+
+    this.isPending = false;
+    this.onCreateEntry = this.onCreateEntry.bind(this);
   }
 
   getWorkTime(mins) {
@@ -37,6 +40,17 @@ class DayCard extends React.Component {
     }
     return `${Math.round(mins)} min`;
   }
+
+  onCreateEntry() {
+    this.isPending = true;
+  }
+
+  // createNew(){
+  //   if (this.) {
+  //     return
+  //   }
+  //   return
+  // }
 
   render() {
     return(
@@ -50,17 +64,20 @@ class DayCard extends React.Component {
                 </Typography>
               </Grid>
               <Grid item xs={1}>
-                <Button variant="fab" mini color="primary" aria-label="add">
+                <Button variant="fab" mini color="primary" aria-label="add" onClick={this.onCreateEntry}>
                   <AddIcon />
                 </Button>
               </Grid>
             </Grid>
               {
+                this.isPending &&
+                  <NewEntry dateId={this.props.dateId} onAddEntry={this.props.onAddEntry}  />
+              }
+              {
                 this.props.entries.entries.map((entry) => {
                   return <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />
                 })
               }
-            <NewEntry dateId={this.props.dateId} onAddEntry={this.props.onAddEntry} />
           </Grid>
           <Grid item xs={10}>
           </Grid>
