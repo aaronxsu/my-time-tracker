@@ -20,7 +20,7 @@ const styles = {
 
 const now = moment().format("HH:mm");
 
-const newEntry = ({}) => {
+const newEntryContent = ({}) => {
   return(
     <div>
       <Card style={styles.card}>
@@ -78,12 +78,12 @@ const newEntry = ({}) => {
   )
 }
 
-class NewEntry extends React.Component {
-  constructor(props) {
-    super(props);
-
+const mapStateToProps = state => {
+  return {
+    dayRecords: state.entries
   }
-
 }
+
+const newEntry = connect()(newEntryContent)
 
 export default NewEntry;
