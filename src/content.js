@@ -8,7 +8,7 @@ const contentContainer = ({dayRecords}) => {
   return (
     <Grid item xs={10}>
       {dayRecords.map((dayRecord, index) => (
-        <DayCard key={index} entries={dayRecord} dateId={dayRecord.id} />
+        <DayCard key={index} dateId={dayRecord.id} />
       ))}
     </Grid>
   );
@@ -20,6 +20,6 @@ const mapStateToProps = state => {
   }
 }
 
-const content = connect(mapStateToProps)(contentContainer)
+const content = connect(mapStateToProps)(contentContainer);
 
 export default content;

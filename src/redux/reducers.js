@@ -8,9 +8,9 @@ const initialState = {
   entries: records
 }
 
-let appendDayEntry = function(state, action) {
+const appendDayEntry = (state, action) => {
   let newState = cloneDeep(state);
-  newState.entries.forEach((day) => {
+  newState.forEach((day) => {
     if (day.id === action.id) {
       day.entries.push(action.entry);
     }
@@ -18,9 +18,9 @@ let appendDayEntry = function(state, action) {
   return newState;
 }
 
-let deleteDayEntry = function(state, action) {
+const deleteDayEntry = (state, action) => {
   let newState = cloneDeep(state);
-  newState.entries.forEach((day) => {
+  newState.forEach((day) => {
     if (day.id === action.id) {
       day.entries = day.entries.filter(e => e.id !== action.entry.id);
     }
@@ -28,29 +28,31 @@ let deleteDayEntry = function(state, action) {
   return newState;
 }
 
-let entries = function(state = initialState, action) {
+const updateDatePendingStatus = (state, action) => {
+  let newState = cloneDeep(state);
+  newState.forEach((day) => {
+    if (day.id === action.dateId) {
+      day.isPending = action.status;
+    }
+  });
+  return newState;
+}
+
+const entries = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ENTRY:
       return appendDayEntry(state, action)
     case DELETE_ENTRY:
       return deleteDayEntry(state, action)
-    default:
-      return state
-  }
-}
-
-let entryStatus = function(state = {status: false}, action) {
-  switch (action.type) {
     case PENDING_ENTRY:
-      return Object.assign({}, state, {status: action.status})
+      return updateDatePendingStatus(state, action)
     default:
       return state
   }
 }
 
 const timeTrackerApp = combineReducers({
-  entries,
-  entryStatus
+  entries
 })
 
 export default timeTrackerApp;

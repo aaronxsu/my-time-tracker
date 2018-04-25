@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {connect} from 'react-redux'
 import moment from 'moment';
 import uuidv4 from 'uuid/v4';
 
@@ -78,12 +78,12 @@ const newEntryContent = ({}) => {
   )
 }
 
-const mapStateToProps = state => {
+const mapDispatchToProps = dispatch => {
   return {
-    dayRecords: state.entries
+    onConfirmClick: () => {}
   }
 }
 
-const newEntry = connect()(newEntryContent)
+const newEntry = connect(mapDispatchToProps)(newEntryContent)
 
-export default NewEntry;
+export default newEntry;

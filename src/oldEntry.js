@@ -19,7 +19,16 @@ class OldEntry extends React.Component {
     this.start = moment(this.props.entry.start, "HH:mm:ss");
     this.end = moment(this.props.entry.end, "HH:mm:ss");
     this.durationObj = this.end.diff(this.start);
-    this.duration = this.props.getWorkTime(this.end.diff(this.start) / 1000 / 60);
+    this.duration = this.getWorkTime(this.end.diff(this.start) / 1000 / 60);
+  }
+
+  getWorkTime(mins) {
+    if(mins > 60 ) {
+      let hours = Math.floor(mins/60) ;
+      let minutes = Math.round(mins - hours * 60);
+      return `${hours} hr ${minutes} min`
+    }
+    return `${Math.round(mins)} min`;
   }
 
   render() {

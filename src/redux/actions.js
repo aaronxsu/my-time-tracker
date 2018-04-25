@@ -29,9 +29,10 @@ export function deleteEntry(id, entry) {
   }
 }
 
-export function pendingEntry(status) {
+export function pendingEntry(status, dateId) {
   return {
     type: PENDING_ENTRY,
-    status
+    status,
+    dateId
   }
 }
