@@ -8,7 +8,7 @@ import registerServiceWorker from './registerServiceWorker';
 import timeTrackerApp from './redux/reducers';
 import records from './records.json';
 
-const initialState = {entries: records, entryStatus: {status: false}};
+const initialState = {entries: records};
 const store = createStore(timeTrackerApp, initialState)
 
 ReactDOM.render(

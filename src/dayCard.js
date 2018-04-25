@@ -86,7 +86,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch => {
   return {
     onAddEntryClick:  (status, dateId) => {
-      dispatch(pendingEntry(status, dateId))
+      dispatch(pendingEntry(status, dateId));
     }
   }
 }

@@ -10,6 +10,8 @@ import TextField from 'material-ui/TextField';
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
 
+import { pendingEntry } from './redux/actions'
+
 const styles = {
   card: {
     marginTop: '1em',
@@ -20,7 +22,7 @@ const styles = {
 
 const now = moment().format("HH:mm");
 
-const newEntryContent = ({}) => {
+const newEntryContent = ({dateId, onDiscardClick}) => {
   return(
     <div>
       <Card style={styles.card}>
@@ -67,7 +69,8 @@ const newEntryContent = ({}) => {
                 variant="fab"
                 mini
                 color="primary"
-                aria-label="discard">
+                aria-label="discard"
+                onClick={() => onDiscardClick(false, dateId)}>
                 <Icon>close</Icon>
               </Button>
             </Grid>
@@ -80,10 +83,18 @@ const newEntryContent = ({}) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onConfirmClick: () => {}
+    onDiscardClick: (status, dateId) => {
+      dispatch(pendingEntry(status, dateId));
+    }
   }
 }
 
-const newEntry = connect(mapDispatchToProps)(newEntryContent)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    dateId: ownProps.dateId
+  }
+}
+
+const newEntry = connect(mapDispatchToProps, mapDispatchToProps)(newEntryContent)
 
 export default newEntry;
