@@ -10,7 +10,7 @@ import TextField from 'material-ui/TextField';
 import Icon from 'material-ui/Icon';
 import Button from 'material-ui/Button';
 
-import { pendingEntry } from './redux/actions'
+import { pendingEntry, addEntry } from './redux/actions'
 
 const styles = {
   card: {
@@ -20,9 +20,28 @@ const styles = {
   }
 }
 
-const now = moment().format("HH:mm");
+const now = moment().format('HH:mm');
 
-const newEntryContent = ({dateId, onDiscardClick}) => {
+const entryContent = {
+  start: now,
+  key: uuidv4()
+}
+
+const handleChange = (key, val) => {
+  entryContent[key] = val;
+}
+
+const getEntryContent = () => {
+  entryContent.start += ':00';
+  if(!entryContent.end) {
+    entryContent.end = moment().format('HH:mm:ss');
+  } else {
+    entryContent.end += ':00';
+  }
+  return entryContent;
+}
+
+const newEntryContent = ({dateId, onDiscardClick, onAddEntryClick}) => {
   return(
     <div>
       <Card style={styles.card}>
@@ -32,13 +51,15 @@ const newEntryContent = ({dateId, onDiscardClick}) => {
               <Input
                 placeholder="Task"
                 inputProps={{'aria-label': 'Task',}}
-                name="task"/>
+                name="task"
+                onChange={(e) => handleChange('task', e.target.value)} />
             </Grid>
             <Grid item xs={3}>
               <Input
                 placeholder="Tag"
                 inputProps={{'aria-label': 'Tag',}}
-                name="tag"/>
+                name="tag"
+                onChange={(e) => handleChange('tag', e.target.value)} />
             </Grid>
             <Grid item xs={3}>
               <TextField
@@ -46,13 +67,15 @@ const newEntryContent = ({dateId, onDiscardClick}) => {
                 defaultValue={now}
                 InputLabelProps={{shrink: true,}}
                 inputProps={{step: 900,}}
-                name="start"/>
+                name="start"
+                onChange={(e) => handleChange('start', e.target.value)} />
               &nbsp;&nbsp;to&nbsp;&nbsp;
               <TextField
                 type="time"
                 InputLabelProps={{shrink: true,}}
                 inputProps={{step: 900,}}
-                name="end"/>
+                name="end"
+                onChange={(e) => handleChange('end', e.target.value)} />
             </Grid>
             <Grid item xs={2}>
               duration
@@ -62,7 +85,8 @@ const newEntryContent = ({dateId, onDiscardClick}) => {
                 variant="fab"
                 mini
                 color="primary"
-                aria-label="confirm">
+                aria-label="confirm"
+                onClick={() => onAddEntryClick(getEntryContent(), dateId, false)}>
                 <Icon>check</Icon>
               </Button>
               <Button
@@ -85,6 +109,9 @@ const mapDispatchToProps = dispatch => {
   return {
     onDiscardClick: (status, dateId) => {
       dispatch(pendingEntry(status, dateId));
+    },
+    onAddEntryClick: (entry, dateId, status) => {
+      dispatch(addEntry(dateId, entry, status));
     }
   }
 }

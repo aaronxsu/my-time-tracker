@@ -7,10 +7,11 @@ import Grid from 'material-ui/Grid';
 import AddIcon from '@material-ui/icons/Add';
 
 import moment from 'moment';
+import uuidv4 from 'uuid/v4';
 
 import NewEntry from './newEntry.js';
 import OldEntry from './oldEntry.js';
-import { pendingEntry } from './redux/actions'
+import { pendingEntry } from './redux/actions';
 
 const styles = {
   marginTop: '1em',
@@ -39,11 +40,11 @@ const dayCardContent = ({entries, totalTime, onAddEntryClick}) => {
             </Grid>
           </Grid>
             {
-              entries.isPending && <NewEntry dateId={entries.id} />
+              entries.isPending && <NewEntry key={uuidv4()} dateId={entries.id} />
             }
             {
-              entries.entries.map((entry) => {
-                return <OldEntry key={entry.id} entry={entry} getWorkTime={this.getWorkTime} />
+              entries.entries.map((entry, idx) => {
+                return <OldEntry key={idx} entry={entry} getWorkTime={this.getWorkTime} />
               })
             }
         </Grid>

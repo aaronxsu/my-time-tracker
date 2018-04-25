@@ -13,6 +13,7 @@ const appendDayEntry = (state, action) => {
   newState.forEach((day) => {
     if (day.id === action.id) {
       day.entries.push(action.entry);
+      day.isPending = action.status;
     }
   });
   return newState;
