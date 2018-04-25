@@ -39,12 +39,9 @@ const dayCardContent = ({entries, totalTime, onAddEntryClick}) => {
               </Button>
             </Grid>
           </Grid>
-            {
-              entries.isPending && <NewEntry key={uuidv4()} dateId={entries.id} />
-            }
-            {
-              entries.entries.map((entry, idx) => {
-                return <OldEntry key={idx} entry={entry} getWorkTime={this.getWorkTime} />
+            { entries.isPending && <NewEntry key={uuidv4()} dateId={entries.id} /> }
+            { entries.entries.map((entry, idx) => {
+                return <OldEntry key={idx} entry={entry} getWorkTime={getWorkTime} dateId={entries.id} />
               })
             }
         </Grid>
@@ -92,6 +89,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-const dayCard = connect(mapStateToProps, mapDispatchToProps)(dayCardContent)
+const dayCard = connect(mapStateToProps, mapDispatchToProps)(dayCardContent);
 
 export default dayCard;
